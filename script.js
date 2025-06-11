@@ -205,7 +205,7 @@ const Game = {
         setTimeout(() => {
         alert(message);
         
-    }, 50); // ~1 frame delay is usually enough
+    }, 150); // ~1 frame delay is usually enough
     },
     updateDisplay: function() {
     const dealerDisplay = document.querySelectorAll(".card-display")[0];

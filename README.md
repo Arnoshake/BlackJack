@@ -1,6 +1,10 @@
-# 🃏 BlakZak — JavaScript Blackjack Game
+# 🃏 The Dog House — JavaScript Blackjack Game
 
 A simple web-based Blackjack game where you play against a dealer. Built using vanilla HTML, CSS, and JavaScript.
+
+I made this during a travel day from Nashville to San Diego!
+
+## TOTAL TIME SPENT: 4 HR 51 MIN
 
 ---
 
