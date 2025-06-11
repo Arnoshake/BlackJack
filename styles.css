@@ -1,0 +1,35 @@
+.page{
+    background-color: red;
+    
+    display: flex;
+    flex:1;
+    height: 100vh;
+    justify-content: center;
+    justify-items: center;
+    padding:50px
+}
+.container{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width:75%;
+    height: 75%;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    
+}
+.play-area{
+    background-color: gold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap:10px;
+    padding:40px;
+
+}
+.card-display{
+    display: flex;
+    
+}
