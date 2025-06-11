@@ -21,6 +21,14 @@ function printCard(card){
     let cardRepresentation = "["  + card.Suit[0].toUpperCase() + "" + card.Value + "]";
     return cardRepresentation
 }
+function displayCardImage(card){
+    if (!card || !card.Suit || !card.Value) return "";
+    const suitInitial = card.Suit[0];
+    const valueInitial = card.Value;
+    const fileName = suitInitial + valueInitial + ".jpg"
+    const imagePath = "images/Snoopy-Cards/" + fileName;
+    return `<img src= "${imagePath}" alt="${valueInitial} of ${card.Suit}" class= "card-image">`
+}
 
 const Game = {
     deck: [],
@@ -40,6 +48,36 @@ const Game = {
 
         this.dealerHand.push(this.drawCard(this.deck));
         this.dealerHand.push(this.drawCard(this.deck));
+
+        let userJack = 0;
+        let botJack = 0;
+        if (this.dealerHand[0].Value == "A" && (this.dealerHand[1].Value == "J" || this.dealerHand[1].Value == "Q" || this.dealerHand[1].Value == "K") || 
+            (this.dealerHand[1].Value == "A" && (this.dealerHand[0].Value == "J" || this.dealerHand[0].Value == "Q" || this.dealerHand[0].Value == "K")) ){
+                this.isGameOver = true;
+                this.updateDisplay();
+                botJack = 1;
+            }
+        if (this.playerHand[0].Value == "A" && (this.playerHand[1].Value == "J" || this.playerHand[1].Value == "Q" || this.playerHand[1].Value == "K") || 
+            (this.playerHand[1].Value == "A" && (this.playerHand[0].Value == "J" || this.playerHand[0].Value == "Q" || this.playerHand[0].Value == "K")) ){
+                this.isGameOver = true;
+                this.updateDisplay();
+                userJack = 1;  
+            }
+        if (userJack == 1 && botJack == 1){
+            this.updateDisplay();
+            this.showResult("Push!");
+            return;
+        }
+        else if (userJack == 1){
+            this.updateDisplay();
+            this.showResult("The player has Black Jack!");
+            return;
+        }
+        else if (botJack){
+            this.updateDisplay();
+            this.showResult("The dealer has Black Jack!");
+            return;
+        }
         this.isGameOver = false
         this.updateDisplay();
     },
@@ -92,12 +130,14 @@ const Game = {
     },
     determineWinner: function (userSum, robotSum){
         if (userSum > 21){ //bust!
+            //this will never happen because it exits early at the event's occurance
             return "Dealer";
         }
         else if (robotSum > 21){
             return "Player";
         }
         else if (robotSum == userSum){
+            console.log("The final sums are identical");
             return "Push";
         }
         else{
@@ -146,23 +186,42 @@ const Game = {
         let playerSum = this.calculateSum(this.playerHand);
         let dealerSum = this.dealerPlays(this.dealerHand);
         let winner = this.determineWinner(playerSum,dealerSum);
-        this.showResult(winner);
+        let message = null;
+        if (winner == "Push"){
+            message = "Push!";
+        }
+        else{
+            message = `The ${winner} has won this round!`;
+        }
+        this.showResult(message);
 
         this.updateDisplay();
     },
     showResult: function(message){
         console.log("Game Over: ", message);
-        alert(message);
         this.isGameOver = true;
+        this.updateDisplay();
+        //timeout allows for the updateDisplay to take place before the alert interupts the process
+        setTimeout(() => {
+        alert(message);
+        
+    }, 50); // ~1 frame delay is usually enough
     },
     updateDisplay: function() {
     const dealerDisplay = document.querySelectorAll(".card-display")[0];
-        dealerDisplay.innerHTML = "DEALER CARDS: [??], " +
-    this.dealerHand.slice(1).map(printCard).join(", ") + "<br> SUM: " + this.calculateSum(this.dealerHand.slice(1));
+    if (this.isGameOver){
+        dealerDisplay.innerHTML = `DEALER CARDS: `+
+    this.dealerHand.map(displayCardImage).join("") + "<br> SUM: " + this.calculateSum(this.dealerHand);
+    }
+    else{
+        dealerDisplay.innerHTML = `DEALER CARDS: <img src = "images/Snoopy-Cards/back.jpg" class = "card-image">, ` +
+    this.dealerHand.slice(1).map(displayCardImage).join("") + "<br> SUM: " + this.calculateSum(this.dealerHand.slice(1));
+    }
+        
 
 
     const playerDisplay = document.querySelectorAll(".card-display")[1];
-    playerDisplay.innerHTML = "USER CARDS: " + this.playerHand.map(printCard).join(", ") + "<br>" +
+    playerDisplay.innerHTML = "USER CARDS: " + this.playerHand.map(displayCardImage).join("") + "<br>" +
                           "SUM: " + this.calculateSum(this.playerHand);
     
 }

@@ -63,6 +63,7 @@ Things I might add later as I continue learning:
 - Display actual card images instead of text.
 - Add persistent game score tracking (wins/losses).
 - advisor on how to improve
+- splitting hands and insurance
 
 ---
 
