@@ -23,7 +23,7 @@ function printCard(card){
 }
 function displayCardImage(card){
     if (!card || !card.Suit || !card.Value) return "";
-    const suitInitial = card.Suit[0];
+    const suitInitial = card.Suit[0].toUpperCase(); // github pages is case sensitive
     const valueInitial = card.Value;
     const fileName = suitInitial + valueInitial + ".jpg"
     const imagePath = "images/Snoopy-Cards/" + fileName;
